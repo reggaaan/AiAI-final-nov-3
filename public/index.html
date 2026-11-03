@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ai-Ai | Ang Tanging AI Assistant Mo!</title>
+    <link rel="icon" type="image/png" href="assets/Aiai-1.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8A4FFF;          
+            --primary-hover: #7A3CEB;
+            --accent-pink: #EC4899;      
+            --accent-blue: #60A5FA;      
+            --bg-light: #F9F6FC;         
+            --text-main: #2D1B4E;        
+            --text-muted: #6B5B8E;       
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(138, 79, 255, 0.15);
+            --line-purple: rgba(138, 79, 255, 0.15);
+            --line-pink: rgba(236, 72, 153, 0.12);
+            --line-blue: rgba(96, 165, 250, 0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-light); 
+            color: var(--text-main); 
+            min-height: 100vh; 
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .background-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; pointer-events: none; }
+        .dream-grid { position: absolute; top: 0; left: 0; width: 200%; height: 200%; background-image: linear-gradient(rgba(138, 79, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(138, 79, 255, 0.04) 1px, transparent 1px); background-size: 50px 50px; transform: perspective(500px) rotateX(20deg); animation: grid-move 20s linear infinite; opacity: 0.6; }
+        @keyframes grid-move { 0% { transform: perspective(500px) rotateX(20deg) translateY(0); } 100% { transform: perspective(500px) rotateX(20deg) translateY(50px); } }
+        
+        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.5; animation: float-orb 10s infinite ease-in-out alternate; }
+        .orb-1 { width: 500px; height: 500px; background: #E9D5FF; top: -150px; left: -150px; animation-duration: 12s; }
+        .orb-2 { width: 400px; height: 400px; background: #FBCFE8; bottom: -100px; right: -100px; animation-duration: 8s; animation-delay: -3s; }
+        .orb-3 { width: 300px; height: 300px; background: #BFDBFE; top: 40%; left: 50%; animation-duration: 15s; animation-delay: -7s; opacity: 0.3; }
+        @keyframes float-orb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, -40px) scale(1.1); } }
+
+        .star-sparkle { position: absolute; width: 12px; height: 12px; background: #fff; clip-path: polygon(50% 0%, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0% 50%, 39% 39%); filter: drop-shadow(0 0 5px var(--accent-pink)) drop-shadow(0 0 10px var(--primary)); animation: twinkle-star 4s infinite ease-in-out; opacity: 0; }
+        .star-sparkle.large { width: 20px; height: 20px; animation-duration: 6s; }
+        @keyframes twinkle-star { 0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; } 50% { transform: scale(1) rotate(90deg); opacity: 1; } }
+
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; position: relative; z-index: 10; }
+        .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.1rem; letter-spacing: 1px; color: var(--primary); }
+        .logo-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); box-shadow: 0 4px 10px rgba(138, 79, 255, 0.2); }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: var(--text-main); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: all 0.3s; position: relative; }
+        .nav-links a:hover { color: var(--primary); }
+
+        .hero-container { display: flex; min-height: calc(100vh - 80px); padding: 40px 5% 60px; align-items: center; gap: 50px; position: relative; z-index: 10; flex: 1; }
+        
+        .left-column { flex: 1; max-width: 600px; }
+        .hero-title { font-size: 4.2rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; color: var(--text-main); text-shadow: 0 4px 20px rgba(138, 79, 255, 0.1); }
+        .hero-title span { background: linear-gradient(135deg, var(--primary), var(--accent-pink), var(--accent-blue)); background-size: 200% 200%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; display: block; animation: gradient-shift 5s ease infinite; }
+        @keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        
+        /* Updated subtitle without the "Powered by..." line */
+        .hero-subtitle { font-size: 1rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 40px; max-width: 450px; }
+        .hero-subtitle strong { color: var(--primary); font-weight: 700; }
+
+        .start-chat-wrapper { position: relative; display: inline-block; max-width: 450px; width: 100%; border-radius: 50px; padding: 3px; background: linear-gradient(135deg, var(--primary), var(--accent-pink), var(--accent-blue)); background-size: 300% 300%; animation: portal-glow 4s linear infinite; box-shadow: 0 10px 30px rgba(138, 79, 255, 0.2); transition: all 0.3s ease; margin-bottom: 20px; }
+        .start-chat-wrapper:hover { box-shadow: 0 15px 40px rgba(138, 79, 255, 0.4); transform: translateY(-3px) scale(1.02); }
+        @keyframes portal-glow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        .start-chat-btn { display: flex; align-items: center; justify-content: center; gap: 12px; background: white; border-radius: 47px; padding: 18px 30px; color: var(--primary); font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 700; text-decoration: none; letter-spacing: 2px; transition: all 0.3s ease; width: 100%; }
+        .start-chat-btn:hover { background: var(--bg-light); color: var(--primary-hover); }
+        .start-chat-btn svg { fill: currentColor; width: 20px; height: 20px; transition: transform 0.3s ease; }
+        .start-chat-btn:hover svg { transform: translateX(6px) scale(1.1); }
+
+        .right-column { flex: 1; display: flex; justify-content: center; position: relative; perspective: 1200px; }
+        .hero-image-wrapper { position: relative; width: 100%; max-width: 500px; aspect-ratio: 1/1; border-radius: 50%; padding: 12px; background: linear-gradient(135deg, var(--primary), var(--accent-pink), var(--accent-blue)); box-shadow: 0 20px 50px rgba(138, 79, 255, 0.2); transition: transform 0.1s ease, box-shadow 0.3s ease; transform-style: preserve-3d; animation: float 6s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
+
+        .hero-image-wrapper::before { content: ''; position: absolute; top: -20px; left: -20px; right: -20px; bottom: -20px; border-radius: 50%; background: radial-gradient(circle, rgba(138, 79, 255, 0.2) 0%, transparent 70%); z-index: -1; animation: breathe 4s infinite alternate; pointer-events: none; }
+        @keyframes breathe { 0% { transform: scale(0.95); opacity: 0.5; } 100% { transform: scale(1.1); opacity: 1; } }
+
+        .hero-image-content { position: relative; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; transform: translateZ(0); background: white; }
+        .album-container { position: relative; width: 100%; height: 100%; border-radius: 50%; }
+        .album-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; opacity: 0; transition: opacity 1.5s ease-in-out; }
+        .album-image.active { opacity: 1; }
+
+        .badge { position: absolute; background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(10px); padding: 10px 20px; border-radius: 30px; font-size: 0.8rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px; box-shadow: 0 8px 20px rgba(138, 79, 255, 0.15); animation: float-badge 4s ease-in-out infinite alternate; z-index: 40; transform: translateZ(30px); }
+        .badge-1 { top: 10%; left: -30px; border-color: var(--primary); animation-delay: 0s; }
+        .badge-2 { bottom: 15%; right: -30px; border-color: var(--accent-pink); animation-delay: -2s; }
+        .badge-icon { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 10px var(--primary); }
+        @keyframes float-badge { 0%, 100% { transform: translateZ(30px) translateY(0px); } 50% { transform: translateZ(30px) translateY(-10px); } }
+
+        /* =========================================
+           PAGE FOOTER
+           ========================================= */
+        .page-footer { background: linear-gradient(180deg, transparent, rgba(138, 79, 255, 0.04)); border-top: 1px solid var(--glass-border); padding: 30px 5% 20px; position: relative; z-index: 10; margin-top: auto; }
+        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 15px; max-width: 1200px; margin: 0 auto; text-align: center; }
+        .footer-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1rem; color: var(--primary); }
+        .footer-brand img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); box-shadow: 0 4px 10px rgba(138, 79, 255, 0.2); }
+        .footer-copy { font-size: 0.78rem; color: var(--text-muted); padding-top: 15px; border-top: 1px solid var(--glass-border); width: 100%; line-height: 1.6; }
+        .footer-copy span { color: var(--primary); font-weight: 600; }
+
+        @media (max-width: 1024px) {
+            .hero-container { flex-direction: column; text-align: center; padding-top: 40px; }
+            .hero-title { font-size: 3rem; }
+            .hero-subtitle { margin: 0 auto 30px auto; }
+            .start-chat-wrapper { margin: 0 auto 40px auto; }
+            .right-column { margin-top: 60px; perspective: none; }
+            .hero-image-wrapper { animation: float 6s ease-in-out infinite; }
+            .badge-1 { left: 0; } .badge-2 { right: 0; }
+        }
+
+        @media (max-width: 640px) {
+            .navbar {
+                padding: 18px 18px 0;
+                gap: 12px;
+                align-items: flex-start;
+            }
+            .nav-links {
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+            .nav-links a {
+                font-size: 0.75rem;
+            }
+            .logo {
+                font-size: 0.95rem;
+            }
+            .logo-img {
+                width: 30px;
+                height: 30px;
+            }
+            .hero-container {
+                padding: 28px 18px 30px;
+                gap: 24px;
+            }
+            .hero-title {
+                font-size: 2.4rem;
+                line-height: 1.08;
+            }
+            .hero-subtitle {
+                font-size: 0.9rem;
+                max-width: 100%;
+            }
+            .start-chat-btn {
+                padding: 16px 20px;
+                font-size: 0.9rem;
+                letter-spacing: 1px;
+            }
+            .right-column {
+                width: 100%;
+                margin-top: 10px;
+            }
+            .hero-image-wrapper {
+                width: min(78vw, 320px);
+                max-width: 320px;
+                aspect-ratio: 1 / 1;
+                transform: none !important;
+                scale: 1;
+            }
+            .badge {
+                padding: 8px 12px;
+                font-size: 0.68rem;
+            }
+            .badge-1 {
+                top: 8%;
+                left: -8px;
+            }
+            .badge-2 {
+                right: -8px;
+                bottom: 12%;
+            }
+            .footer-copy {
+                font-size: 0.72rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-layer">
+        <div class="dream-grid"></div>
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="star-sparkle" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
+        <div class="star-sparkle" style="top: 30%; left: 80%; width: 3px; height: 3px; animation-delay: 1.5s;"></div>
+        <div class="star-sparkle large" style="top: 70%; left: 15%; animation-delay: 0.5s;"></div>
+        <div class="star-sparkle" style="top: 85%; left: 60%; width: 4px; height: 4px; animation-delay: 2s;"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="assets/Aiai-1.png" alt="Ai-Ai Delas Alas" class="logo-img">
+            AI-AI
+        </div>
+        <div class="nav-links">
+            <a href="about.html">About us</a>
+            <a href="login.html" id="authNavLink">Log In / Register</a>
+        </div>
+    </nav>
+
+    <main class="hero-container">
+        <div class="left-column">
+            <h1 class="hero-title">
+                Ang Tanging <br>
+                <span>AI Assistant</span>
+                Mo!
+            </h1>
+            <p class="hero-subtitle">
+                Experience the power of multimodal AI. Upload images for real-time analysis, chat in Taglish with Ai-Ai, and securely save your conversation history.
+            </p>
+            <div class="start-chat-wrapper">
+                <a href="chat.html" class="start-chat-btn">
+                    START CHATTING NOW
+                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="right-column">
+            <div class="hero-image-wrapper" id="tiltCard">
+                <div class="hero-image-content">
+                    <div class="album-container" id="albumContainer">
+                        <img src="assets/Aiai-1.png" class="album-image active" alt="Ai-Ai Delas Alas">
+                    </div>
+                </div>
+                <div class="badge badge-1">
+                    <div class="badge-icon"></div> Multimodal AI 
+                </div>
+                <div class="badge badge-2">
+                    <div class="badge-icon" style="background: var(--accent-pink); box-shadow: 0 0 10px var(--accent-pink);"></div> Taglish Support
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- PAGE FOOTER -->
+    <footer class="page-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="assets/Aiai-1.png" alt="Ai-Ai">
+                AI-AI
+            </div>
+            <div class="footer-copy">
+                © 2026 <span>AI-AI</span>. Ang Tanging AI Assistant Mo!
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function decodeJwtPayload(tokenValue) {
+            try {
+                if (!tokenValue || typeof tokenValue !== 'string') return null;
+                const base64Url = tokenValue.split('.')[1];
+                if (!base64Url) return null;
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map((char) => {
+                    return '%' + ('00' + char.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                return JSON.parse(jsonPayload);
+            } catch (err) {
+                return null;
+            }
+        }
+
+        function isSessionValid() {
+            const token = localStorage.getItem('aiai_token');
+            if (!token) return false;
+
+            const expiresAt = Number(localStorage.getItem('aiai_expires_at') || 0);
+            if (expiresAt && Date.now() >= expiresAt) {
+                localStorage.removeItem('aiai_token');
+                localStorage.removeItem('aiai_user');
+                localStorage.removeItem('aiai_expires_at');
+                return false;
+            }
+
+            const payload = decodeJwtPayload(token);
+            if (!payload || !payload.exp) {
+                localStorage.removeItem('aiai_token');
+                localStorage.removeItem('aiai_user');
+                localStorage.removeItem('aiai_expires_at');
+                return false;
+            }
+
+            if (Date.now() >= Number(payload.exp) * 1000) {
+                localStorage.removeItem('aiai_token');
+                localStorage.removeItem('aiai_user');
+                localStorage.removeItem('aiai_expires_at');
+                return false;
+            }
+
+            return true;
+        }
+
+        function updateAuthNav() {
+            const authLink = document.getElementById('authNavLink');
+            if (!authLink) return;
+
+            if (isSessionValid()) {
+                authLink.textContent = 'Open Chat';
+                authLink.href = 'chat.html';
+                authLink.setAttribute('aria-label', 'Open chat');
+            } else {
+                authLink.textContent = 'Log In / Register';
+                authLink.href = 'login.html';
+                authLink.setAttribute('aria-label', 'Log in or register');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAuthNav();
+            const images = document.querySelectorAll('.album-image');
+            let currentIndex = 0;
+            const intervalTime = 4000; 
+
+            if (images.length > 1) {
+                setInterval(() => {
+                    images[currentIndex].classList.remove('active');
+                    currentIndex = (currentIndex + 1) % images.length;
+                    images[currentIndex].classList.add('active');
+                }, intervalTime);
+            }
+
+            const card = document.getElementById('tiltCard');
+            const rightCol = document.querySelector('.right-column'); 
+
+            rightCol.addEventListener('mousemove', (e) => {
+                const rect = rightCol.getBoundingClientRect();
+                const x = e.clientX - rect.left; 
+                const y = e.clientY - rect.top;  
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = ((y - centerY) / centerY) * -15; 
+                const rotateY = ((x - centerX) / centerX) * 15;
+
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            });
+
+            rightCol.addEventListener('mouseleave', () => {
+                card.style.transform = `rotateX(0) rotateY(0) scale(1)`;
+            });
+        });
+    </script>
+
+</body>
+</html>

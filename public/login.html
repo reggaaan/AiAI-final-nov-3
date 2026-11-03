@@ -1,0 +1,476 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log In | Ai-Ai Workspace</title>
+  <link rel="icon" type="image/png" href="assets/Aiai-1.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #8a4fff;
+      --primary-2: #ec4899;
+      --bg: #f6f2fb;
+      --card: rgba(255,255,255,0.9);
+      --text: #2e234a;
+      --muted: #685b8f;
+      --line: rgba(138,79,255,0.12);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Poppins', sans-serif;
+      padding: 32px 18px;
+    }
+
+    .auth-wrap {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .back-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 10px 2px;
+      padding: 6px 10px 6px 6px;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.82rem;
+      border-radius: 10px;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .back-home:hover {
+      background: rgba(138,79,255,0.05);
+      color: var(--primary);
+      transform: translateX(-1px);
+    }
+
+    .auth-switch {
+      position: relative;
+      display: flex;
+      gap: 8px;
+      background: rgba(138,79,255,0.08);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 6px;
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+
+    .auth-indicator {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      width: calc(50% - 8px);
+      height: calc(100% - 12px);
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      border-radius: 10px;
+      box-shadow: 0 8px 22px rgba(138,79,255,0.18);
+      transition: transform 0.28s ease;
+    }
+
+    .auth-tab {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font: 700 0.82rem 'Poppins', sans-serif;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: color 0.2s ease, transform 0.18s ease;
+    }
+
+    .auth-tab:hover {
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .auth-tab.active {
+      color: white;
+    }
+
+    .login-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: 0 18px 40px rgba(110,82,170,0.08);
+      padding: 28px 28px 22px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .auth-wrap.is-register .login-card {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 44px rgba(138,79,255,0.12);
+      border-color: rgba(138,79,255,0.18);
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .logo {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 12px;
+      border: 2px solid white;
+      box-shadow: 0 8px 18px rgba(138,79,255,0.12);
+    }
+
+    .login-header h1 {
+      margin: 0 0 4px;
+      font-size: 1.7rem;
+      font-weight: 800;
+    }
+
+    .login-header p {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    #emailGroup {
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      margin-bottom: 0;
+      pointer-events: none;
+      transform: translateY(-4px);
+      transition: opacity 0.22s ease, max-height 0.28s ease, margin-bottom 0.22s ease, transform 0.22s ease;
+    }
+
+    #emailGroup.show {
+      opacity: 1;
+      max-height: 90px;
+      margin-bottom: 18px;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .form-group label {
+      display: block;
+      margin: 0 0 8px 4px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper svg {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--muted);
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      border: 1px solid rgba(138,79,255,0.15);
+      background: white;
+      border-radius: 12px;
+      padding: 14px 16px 14px 46px;
+      font: 400 0.94rem 'Poppins', sans-serif;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .input-wrapper input:focus {
+      border-color: rgba(138,79,255,0.7);
+      box-shadow: 0 0 0 4px rgba(138,79,255,0.08);
+    }
+
+    .input-wrapper input::placeholder {
+      color: #a39ab7;
+    }
+
+    .form-options {
+      display: flex;
+      align-items: center;
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .remember-me {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .remember-me input {
+      width: 15px;
+      height: 15px;
+      accent-color: var(--primary);
+    }
+
+    .login-btn {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      font: 700 0.98rem 'Poppins', sans-serif;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 12px 24px rgba(138,79,255,0.2);
+    }
+
+    .form-footer {
+      margin-top: 14px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .form-footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 22px 14px; }
+      .login-card { padding: 22px 18px 18px; }
+      .login-header h1 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-wrap">
+    <a href="index.html" class="back-home">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Back to Home
+    </a>
+
+    <div class="auth-switch" aria-label="Authentication mode switch">
+      <div class="auth-indicator" id="authIndicator"></div>
+      <button type="button" class="auth-tab active" data-mode="login">Log In</button>
+      <button type="button" class="auth-tab" data-mode="register">Register</button>
+    </div>
+
+    <div class="login-card">
+      <div class="login-header">
+        <img class="logo" src="assets/Aiai-1.png" alt="Ai-Ai Avatar" />
+        <h1 id="authTitle">Welcome Back!</h1>
+        <p id="authSubtitle">Log in to continue your chikahan with Ai-Ai.</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <div class="input-wrapper">
+            <input type="text" id="username" placeholder="Martina Ina Montecillo" required>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          </div>
+        </div>
+
+        <div class="form-group" id="emailGroup" hidden>
+          <label for="email">Email Address</label>
+          <div class="input-wrapper">
+            <input type="email" id="email" placeholder="Ina_Montecillo@gmail.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <input type="password" id="password" placeholder="••••••••" required>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          </div>
+        </div>
+
+        <div class="form-options" id="rememberRow">
+          <label class="remember-me">
+            <input type="checkbox" checked />
+            Remember me
+          </label>
+        </div>
+
+        <button type="submit" class="login-btn" id="submitBtn">
+          Log In
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+
+        <div class="form-footer">
+          <span id="switchText">No account yet?</span>
+          <a href="#" id="switchModeLink">Create one</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const authTitle = document.getElementById('authTitle');
+    const authSubtitle = document.getElementById('authSubtitle');
+    const emailGroup = document.getElementById('emailGroup');
+    const submitBtn = document.getElementById('submitBtn');
+    const switchText = document.getElementById('switchText');
+    const switchModeLink = document.getElementById('switchModeLink');
+    const authTabs = document.querySelectorAll('.auth-tab');
+    const loginForm = document.getElementById('loginForm');
+    const rememberRow = document.getElementById('rememberRow');
+    const authWrap = document.querySelector('.auth-wrap');
+    const authIndicator = document.getElementById('authIndicator');
+    const SESSION_TIMEOUT_MS = 30 * 60 * 1000;
+    let authMode = 'login';
+
+    function decodeJwtPayload(token) {
+      try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map((char) => {
+          return '%' + ('00' + char.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonPayload);
+      } catch (err) {
+        return null;
+      }
+    }
+
+    function clearSessionState() {
+      localStorage.removeItem('aiai_token');
+      localStorage.removeItem('aiai_user');
+      localStorage.removeItem('aiai_expires_at');
+    }
+
+    function isSessionValid() {
+      const token = localStorage.getItem('aiai_token');
+      if (!token) return false;
+
+      const expiresAt = Number(localStorage.getItem('aiai_expires_at') || 0);
+      if (expiresAt && Date.now() >= expiresAt) {
+        clearSessionState();
+        return false;
+      }
+
+      const payload = decodeJwtPayload(token);
+      if (!payload || !payload.exp) {
+        clearSessionState();
+        return false;
+      }
+
+      if (Date.now() >= Number(payload.exp) * 1000) {
+        clearSessionState();
+        return false;
+      }
+
+      return true;
+    }
+
+    if (isSessionValid()) {
+      window.location.href = 'chat.html';
+    }
+
+    function setAuthMode(mode) {
+      authMode = mode;
+      const isLogin = mode === 'login';
+
+      authTabs.forEach(tab => tab.classList.toggle('active', tab.dataset.mode === mode));
+      authWrap.classList.toggle('is-register', !isLogin);
+      authIndicator.style.transform = isLogin ? 'translateX(0%)' : 'translateX(100%)';
+      rememberRow.style.display = isLogin ? 'flex' : 'none';
+      authTitle.textContent = isLogin ? 'Welcome Back!' : 'Create Account';
+      authSubtitle.textContent = isLogin ? 'Log in to continue your chikahan with Ai-Ai.' : 'Start your new Ai-Ai friendship today.';
+      submitBtn.innerHTML = isLogin ? 'Log In <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>' : 'Register <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+      switchText.textContent = isLogin ? 'No account yet?' : 'Already have an account?';
+      switchModeLink.textContent = isLogin ? 'Create one' : 'Log in';
+
+      const emailInput = document.getElementById('email');
+      emailInput.required = !isLogin;
+
+      if (isLogin) {
+        emailGroup.classList.remove('show');
+        setTimeout(() => {
+          emailGroup.hidden = true;
+        }, 220);
+      } else {
+        emailGroup.hidden = false;
+        requestAnimationFrame(() => {
+          emailGroup.classList.add('show');
+        });
+      }
+    }
+
+    authTabs.forEach(tab => tab.addEventListener('click', () => setAuthMode(tab.dataset.mode)));
+    switchModeLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      setAuthMode(authMode === 'login' ? 'register' : 'login');
+    });
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      try {
+        const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/register';
+        const payload = authMode === 'login' ? { username, password } : { username, email, password };
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (!res.ok && authMode === 'login' && data.error === 'User not found.') {
+          setAuthMode('register');
+          alert('Account not found. Switch to Register and create one.');
+          return;
+        }
+
+        if (res.ok) {
+          localStorage.setItem('aiai_token', data.token);
+          localStorage.setItem('aiai_user', data.username);
+          localStorage.setItem('aiai_expires_at', String(Date.now() + SESSION_TIMEOUT_MS));
+          window.location.href = 'chat.html';
+        } else {
+          alert(data.error || 'Authentication failed');
+        }
+      } catch (err) {
+        alert('Could not connect to backend server.');
+      }
+    });
+
+    setAuthMode('login');
+  </script>
+</body>
+</html>

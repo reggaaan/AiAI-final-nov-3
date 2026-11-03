@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>About Us | Ai-Ai Workspace</title>
+    <link rel="icon" type="image/png" href="assets/Aiai-1.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8A4FFF;
+            --primary-hover: #7A3CEB;
+            --accent-pink: #EC4899;
+            --accent-blue: #60A5FA;
+            --bg-light: #F9F6FC;
+            --text-main: #2D1B4E;
+            --text-muted: #6B5B8E;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(138, 79, 255, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { min-height: 100%; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 80px 20px 0;
+            position: relative;
+        }
+
+        .background-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; pointer-events: none; }
+        .geo-grid { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(var(--primary) 1.5px, transparent 1.5px); background-size: 50px 50px; opacity: 0.1; -webkit-mask-image: radial-gradient(circle at center, black 20%, transparent 70%); mask-image: radial-gradient(circle at center, black 20%, transparent 70%); }
+        .bg-line { position: absolute; animation-duration: 25s; animation-iteration-count: infinite; animation-timing-function: linear; }
+        .bg-line-1 { width: 200%; height: 2px; background: linear-gradient(90deg, transparent, rgba(138, 79, 255, 0.15), transparent); top: 20%; left: -50%; transform: rotate(25deg); animation-name: slide-line-1; }
+        .bg-line-2 { width: 200%; height: 2px; background: linear-gradient(90deg, transparent, rgba(236, 72, 153, 0.12), transparent); bottom: 30%; right: -50%; transform: rotate(-35deg); animation-name: slide-line-2; }
+        @keyframes slide-line-1 { 0% { transform: rotate(25deg) translateX(-50px); } 100% { transform: rotate(25deg) translateX(50px); } }
+        @keyframes slide-line-2 { 0% { transform: rotate(-35deg) translateX(50px); } 100% { transform: rotate(-35deg) translateX(-50px); } }
+
+        .star-sparkle { position: absolute; width: 12px; height: 12px; background: #fff; clip-path: polygon(50% 0%, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0% 50%, 39% 39%); filter: drop-shadow(0 0 5px var(--accent-pink)) drop-shadow(0 0 10px var(--primary)); animation: twinkle-star 4s infinite ease-in-out; opacity: 0; }
+        .star-sparkle.large { width: 20px; height: 20px; animation-duration: 6s; }
+        @keyframes twinkle-star { 0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; } 50% { transform: scale(1) rotate(90deg); opacity: 1; } }
+
+        .back-home { position: absolute; top: 20px; left: 20px; display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; z-index: 10; transition: color 0.2s; }
+        .back-home:hover { color: var(--primary); }
+
+        .about-container { max-width: 900px; width: 100%; position: relative; z-index: 10; animation: fadeIn 0.6s ease-out; margin-bottom: 60px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .about-header { text-align: center; margin-bottom: 40px; }
+        .about-header img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 4px solid white; box-shadow: 0 10px 25px rgba(138, 79, 255, 0.2); margin-bottom: 20px; }
+        .about-header h1 { font-size: 2.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 10px; }
+        .about-header p { font-size: 1.05rem; color: var(--text-muted); max-width: 600px; margin: 0 auto; line-height: 1.6; }
+
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+        .info-card { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(138, 79, 255, 0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .info-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(138, 79, 255, 0.1); }
+        .info-card h2 { font-size: 1.2rem; font-weight: 700; color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .info-card p, .info-card ul { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+        .info-card ul { list-style: none; padding-left: 0; }
+        .info-card ul li { margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px; }
+        .info-card ul li::before { content: '✦'; color: var(--accent-pink); font-size: 0.8rem; margin-top: 2px; }
+        .full-width { grid-column: 1 / -1; }
+
+        .persona-highlight { background: linear-gradient(135deg, rgba(138, 79, 255, 0.1), rgba(236, 72, 153, 0.05)); border: 1px solid rgba(138, 79, 255, 0.3); border-radius: 20px; padding: 30px; text-align: center; margin-bottom: 24px; }
+        .persona-highlight h2 { font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 10px; }
+        .persona-highlight p { font-size: 1rem; color: var(--text-muted); max-width: 700px; margin: 0 auto; line-height: 1.7; }
+        .persona-highlight span { color: var(--primary); font-weight: 700; }
+
+        .page-footer { background: linear-gradient(180deg, transparent, rgba(138, 79, 255, 0.04)); border-top: 1px solid var(--glass-border); padding: 30px 5% 20px; position: relative; z-index: 10; margin-top: 50px; width: 100%; }
+        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 15px; max-width: 1200px; margin: 0 auto; text-align: center; }
+        .footer-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1rem; color: var(--primary); }
+        .footer-brand img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); box-shadow: 0 4px 10px rgba(138, 79, 255, 0.2); }
+        .footer-copy { font-size: 0.78rem; color: var(--text-muted); padding-top: 15px; border-top: 1px solid var(--glass-border); width: 100%; line-height: 1.6; }
+        .footer-copy span { color: var(--primary); font-weight: 600; }
+
+        @media (max-width: 768px) {
+            .info-grid { grid-template-columns: 1fr; }
+            .about-header h1 { font-size: 2rem; }
+            .about-header p { font-size: 0.95rem; }
+            .about-container { padding: 0 10px; }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #D1C4E9; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <div class="background-layer">
+        <div class="geo-grid"></div>
+        <div class="bg-line bg-line-1"></div>
+        <div class="bg-line bg-line-2"></div>
+        <div class="star-sparkle" style="top: 10%; left: 15%; animation-delay: 0s;"></div>
+        <div class="star-sparkle large" style="top: 80%; left: 85%; animation-delay: 2s;"></div>
+        <div class="star-sparkle" style="top: 50%; left: 30%; animation-delay: 1s;"></div>
+        <div class="star-sparkle" style="top: 25%; left: 90%; animation-delay: 3s;"></div>
+        <div class="star-sparkle" style="top: 90%; left: 20%; animation-delay: 4s;"></div>
+        <div class="star-sparkle large" style="top: 40%; left: 70%; animation-delay: 2.5s;"></div>
+    </div>
+
+    <a href="index.html" class="back-home">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Back to Home
+    </a>
+
+    <div class="about-container">
+        <div class="about-header">
+            <img src="assets/Aiai-1.png" alt="Ai-Ai Avatar">
+            <h1>About Ai-Ai Workspace</h1>
+            <p>Ang Tanging AI Assistant Mo! Discover the technology and personality behind your favorite AI companion.</p>
+        </div>
+
+        <div class="persona-highlight">
+            <h2>Meet Ai-Ai</h2>
+            <p>
+                Ai-Ai is not your ordinary AI. Configured with a special system instruction, and she adopts the name of the one and only <span>Ai-Ai Delas Alas</span>. She speaks naturally in <span>Taglish</span> (Tagalog + English), making every conversation feel warm. Whether you need help, or just someone to talk to, Ai-Ai is always ready to assist!
+            </p>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    Core Functionality
+                </h2>
+                <ul>
+                    <li>Multimodal chat (text & image analysis)</li>
+                    <li>Real-time token streaming responses</li>
+                    <li>Fluid conversational flow</li>
+                    <li>Vision capability for image understanding</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    Tech Stack
+                </h2>
+                <ul>
+                    <li><strong>Frontend:</strong> HTML5, CSS3, Vanilla JS</li>
+                    <li><strong>Backend:</strong> Node.js + Express.js</li>
+                    <li><strong>Database:</strong> SQLite3</li>
+                    <li><strong>AI API:</strong> Google Gemini (gemini-3.6-flash)</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    Security & Memory
+                </h2>
+                <ul>
+                    <li>Secure JWT Authentication</li>
+                    <li>Isolated private user sessions</li>
+                    <li>SQLite3 stores full conversation history</li>
+                    <li>Thread titles, prompts, responses, & images saved</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                    Why Ai-Ai?
+                </h2>
+                <ul>
+                    <li>Speaks your language (Taglish!)</li>
+                    <li>Fun, relatable, and smart</li>
+                    <li>Never forgets your chikahan</li>
+                    <li>Always ready to help 24/7</li>
+                </ul>
+            </div>
+
+            <div class="info-card full-width">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    Multimodal AI Vision
+                </h2>
+                <p>
+                    Ai-Ai isn't just about text. You can upload images directly into the chat, and she will analyze them using the Gemini API's powerful vision capabilities. Whether it's a screenshot, a photo of a place you want to know more about, or a meme you want to share. Ai-Ai can see and understand it all while keeping the conversation in Taglish!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="page-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="assets/Aiai-1.png" alt="Ai-Ai">
+                AI-AI
+            </div>
+            <div class="footer-copy">
+                © 2026 <span>AI-AI</span>. Ang Tanging AI Assistant Mo!
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
